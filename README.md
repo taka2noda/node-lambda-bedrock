@@ -145,7 +145,7 @@ dd_site    = "datadoghq.com"
 ```
 
 
-### 6. Datadog ダッシュボード
+### 6. Datadog ダッシュボード — `datadog/dashboard_bedrock_by_user.json`
 
 `datadog/dashboard_bedrock_by_user.json` に `usr.id` スパン属性を元にした Bedrock 呼び出し分析ダッシュボードのエクスポートを格納している。
 
