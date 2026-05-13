@@ -65,6 +65,7 @@ AWS Lambda (Node.js 20.x / us-west-2)
 ```
 
 `dd-trace` と `datadog-lambda-js` はLambda Layerではなくデプロイパッケージにバンドルする。
+
 ---
 
 ### 2. ハンドラーラッパーとカスタム計装 — `src/index.js`
