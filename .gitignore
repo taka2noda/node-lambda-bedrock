@@ -1,0 +1,21 @@
+# Dependencies
+src/node_modules/
+
+# Lambda build artifact
+lambda.zip
+
+# Lambda invoke test output
+response.json
+
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfvars
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store

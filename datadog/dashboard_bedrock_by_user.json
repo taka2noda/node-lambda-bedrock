@@ -1,0 +1,202 @@
+{
+  "dashboard_id": "v52-vqp-2mz",
+  "url": "https://taka2.datadoghq.com/dashboard/v52-vqp-2mz",
+  "title": "node-lambda-bedrock: Bedrock 呼び出し分析 (ユーザー別)",
+  "description": "usr.id スパン属性を元にした Amazon Bedrock 呼び出し回数の分析ダッシュボード",
+  "tags": ["ai:created_with_ai"],
+  "template_variables": [
+    {
+      "name": "env",
+      "defaults": ["dev"]
+    }
+  ],
+  "widgets": [
+    {
+      "id": 8198733399865237,
+      "definition": {
+        "type": "toplist",
+        "title": "ユーザー別 Bedrock 呼び出し回数 (合計)",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "data_source": "spans",
+                "name": "query1",
+                "search": { "query": "service:node-lambda-bedrock operation_name:aws.lambda $env" },
+                "indexes": ["*"],
+                "compute": { "aggregation": "count" },
+                "group_by": [
+                  {
+                    "facet": "@usr.id",
+                    "limit": 20,
+                    "sort": { "aggregation": "count", "order": "desc" }
+                  }
+                ],
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar",
+            "sort": {
+              "count": 20,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 0, "width": 5, "height": 4 }
+    },
+    {
+      "id": 537654919792749,
+      "definition": {
+        "type": "query_value",
+        "title": "Bedrock 呼び出し総数 (過去7日)",
+        "autoscale": true,
+        "precision": 0,
+        "timeseries_background": {
+          "type": "area",
+          "yaxis": { "include_zero": true }
+        },
+        "requests": [
+          {
+            "aggregator": "last",
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "data_source": "spans",
+                "name": "query1",
+                "search": { "query": "service:node-lambda-bedrock operation_name:aws.lambda $env" },
+                "indexes": ["*"],
+                "compute": { "aggregation": "count" },
+                "group_by": [],
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar"
+          }
+        ]
+      },
+      "layout": { "x": 5, "y": 0, "width": 3, "height": 4 }
+    },
+    {
+      "id": 959002978014289,
+      "definition": {
+        "type": "query_value",
+        "title": "アクティブユーザー数 (過去7日)",
+        "autoscale": true,
+        "precision": 0,
+        "requests": [
+          {
+            "aggregator": "last",
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "data_source": "spans",
+                "name": "query1",
+                "search": { "query": "service:node-lambda-bedrock operation_name:aws.lambda $env" },
+                "indexes": ["*"],
+                "compute": { "aggregation": "cardinality", "metric": "@usr.id" },
+                "group_by": [],
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar"
+          }
+        ]
+      },
+      "layout": { "x": 8, "y": 0, "width": 4, "height": 4 }
+    },
+    {
+      "id": 7985827279861646,
+      "definition": {
+        "type": "timeseries",
+        "title": "ユーザー別 Bedrock 呼び出し回数 (時系列)",
+        "show_legend": true,
+        "yaxis": { "include_zero": true },
+        "requests": [
+          {
+            "display_type": "bars",
+            "formulas": [{ "formula": "query1" }],
+            "queries": [
+              {
+                "data_source": "spans",
+                "name": "query1",
+                "search": { "query": "service:node-lambda-bedrock operation_name:aws.lambda $env" },
+                "indexes": ["*"],
+                "compute": { "aggregation": "count" },
+                "group_by": [
+                  {
+                    "facet": "@usr.id",
+                    "limit": 10,
+                    "sort": { "aggregation": "count", "order": "desc" }
+                  }
+                ],
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "dog_classic",
+              "line_type": "solid",
+              "line_width": "normal"
+            }
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 4, "width": 12, "height": 4 }
+    },
+    {
+      "id": 2257321054064270,
+      "definition": {
+        "type": "query_table",
+        "title": "ユーザー別 詳細 (呼び出し数 / 平均レイテンシ)",
+        "requests": [
+          {
+            "formulas": [
+              { "formula": "call_count", "alias": "呼び出し回数", "cell_display_mode": "bar" },
+              { "formula": "avg_duration / 1000000", "alias": "平均レイテンシ (ms)" }
+            ],
+            "queries": [
+              {
+                "data_source": "spans",
+                "name": "call_count",
+                "search": { "query": "service:node-lambda-bedrock operation_name:aws.lambda $env" },
+                "indexes": ["*"],
+                "compute": { "aggregation": "count" },
+                "group_by": [
+                  {
+                    "facet": "@usr.id",
+                    "limit": 50,
+                    "sort": { "aggregation": "count", "order": "desc" }
+                  }
+                ],
+                "storage": "hot"
+              },
+              {
+                "data_source": "spans",
+                "name": "avg_duration",
+                "search": { "query": "service:node-lambda-bedrock operation_name:aws.lambda $env" },
+                "indexes": ["*"],
+                "compute": { "aggregation": "avg", "metric": "@duration" },
+                "group_by": [
+                  {
+                    "facet": "@usr.id",
+                    "limit": 50,
+                    "sort": { "aggregation": "count", "order": "desc" }
+                  }
+                ],
+                "storage": "hot"
+              }
+            ],
+            "response_format": "scalar",
+            "sort": {
+              "count": 50,
+              "order_by": [{ "type": "formula", "index": 0, "order": "desc" }]
+            }
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 8, "width": 12, "height": 4 }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+aws_region  = "us-west-2"
+environment = "dev"
+dd_api_key  = "your-datadog-api-key-here"
+dd_site     = "datadoghq.com"
