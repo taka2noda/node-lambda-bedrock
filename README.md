@@ -39,6 +39,11 @@ AWS Lambda (Node.js 20.x / us-west-2)
     │     (us.anthropic.claude-haiku-4-5-20251001-v1:0)
     └─→ Datadog APM (usr.id タグ付きトレース)
 ```
+### Datadog 表示イメージ
+<img width="1060" height="699" alt="image" src="https://github.com/user-attachments/assets/2d38cf19-d723-4bbb-9e45-fb744194d4d9" />
+
+<img width="1341" height="783" alt="image" src="https://github.com/user-attachments/assets/6c97db05-693e-43ea-b1cf-ee04a32d147a" />
+
 
 ### Datadog 監視構成
 
